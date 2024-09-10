@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link rel="stylesheet" href="css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+  </head>
+
+  <body style="background: linear-gradient(to right, #e5e5e5, #b9a0e0)">
+    <header>
+      <!-- place navbar here -->
+      <nav class="navbar navbar-expand-lg bg-body-tertiary navBar">
+        <div class="container-fluid">
+          <img src="src/Logo.png" class="opacity-50" height="28px" alt="" />
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse navLinks" id="navbarNav">
+            <ul class="navbar-nav nav-pills">
+              <li class="nav-item">
+                <a class="nav-link text-body-tertiary" href="index.html"
+                  >HOME</a
+                >
+              </li>
+              <!-- <li class="nav-item">
+                <a class="nav-link text-body-tertiary" href="report.html"
+                  >WEATHER REPORT</a
+                >
+              </li> -->
+              <li class="nav-item">
+                <a
+                  class="nav-link active text-white px-3 rounded-4 fw-bolder"
+                  aria-current="page"
+                  style="cursor: default"
+                  >CONTACT US</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+        <div class="row flex-lg-row-reverse align-items-center g-lg-5 p-4">
+          <div class="col-lg-7 text-center text-lg-end">
+            <h1 class="display-4 fw-bolder lh-1 text-dark mb-4">
+              <strong>Get In Touch: Your Forecast Awaits !</strong>
+            </h1>
+            <p class="col-lg-10 fs-4 mb-4" style="width: 100%">
+              Have questions, feedback, or just want to chat about the latest
+              weather trends? We are here to help! Whether you need assistance
+              navigating the app or have suggestions for new features, we’d love
+              to hear from you. Drop us a line and stay connected to ensure you
+              get the most accurate and personalized weather updates.
+            </p>
+          </div>
+          <div class="col-md-10 mx-auto col-lg-5">
+            <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
+              <div class="form-floating mb-3">
+                <input
+                  type="email"
+                  class="form-control"
+                  id="floatingEmail"
+                  placeholder="name@example.com"
+                  required
+                />
+                <label for="floatingEmail">Email address</label>
+              </div>
+              <div class="form-floating mb-3 d-flex">
+                <textarea
+                  class="form-control"
+                  id="floatingMessage"
+                  placeholder="Message"
+                  style="height: 150px"
+                  required
+                ></textarea>
+                <label for="floatingMessage">Message</label>
+              </div>
+              <button
+                class="w-100 btn btn-lg btn-primary"
+                type="submit"
+                id="btnSubmit"
+                onclick="btnSubmitClicked()"
+              >
+                SUBMIT
+              </button>
+              <hr class="my-4" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="container">
+        <footer
+          class="d-flex flex-wrap justify-content-between align-items-center pb-3 mb-4 border-top border-secondary mt-3"
+        >
+          <div class="col-md-4 d-flex align-items-center">
+            <span class="my-3 mb-md-0 text-body-secondary"
+              >© 2024 WeatherMe, Inc</span
+            >
+          </div>
+
+          <ul
+            class="nav col-md-4 justify-content-end a list-unstyled d-flex mt-3"
+          >
+            <li class="ms-4">
+              <a
+                class="text-body-secondary"
+                href="https://github.com/Tharush2002"
+                ><i class="bi bi-github h3"></i
+              ></a>
+            </li>
+            <li class="ms-4">
+              <a class="text-body-secondary" href=""
+                ><i class="bi bi-instagram h3"></i
+              ></a>
+            </li>
+            <li class="ms-4">
+              <a class="text-body-secondary" href=""
+                ><i class="bi bi-whatsapp h3"></i
+              ></a>
+            </li>
+          </ul>
+        </footer>
+      </div>
+    </footer>
+
+    <!-- SUCCESS TOAST -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div
+        id="successToast"
+        class="toast bg-primary"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="toast-header">
+          <strong class="me-auto">WEATHER-ME</strong>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="toast-body text-white">We'll get in touch with you shortly !</div>
+      </div>
+    </div>
+
+    <!-- FAILURE TOAST -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div
+        id="failureToast"
+        class="toast bg-danger"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="toast-header">
+          <strong class="me-auto">WEATHER-ME</strong>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="toast-body text-white">Please Fill All The Fields With Correct Data</div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      document.getElementById("btnSubmit").addEventListener('click',(e)=>{
+        e.preventDefault();
+      })
+      document.addEventListener('DOMContentLoaded', ()=>{
+        document.getElementById("floatingEmail").value="";
+        document.getElementById("floatingMessage").value="";
+      })
+    </script>
+  </body>
+</html>

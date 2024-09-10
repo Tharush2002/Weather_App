@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="stylesheet" href="css/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+  </head>
+
+  <body>
+    <header>
+      <!-- place navbar here -->
+      <nav class="navbar navbar-expand-lg bg-body-tertiary navBar">
+        <div class="container-fluid">
+          <img src="src/Logo.png" class="opacity-50" height="28px" alt="" />
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+            id="navbar-toggler"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse navLinks" id="navbarNav">
+            <ul class="navbar-nav nav-pills">
+              <li class="nav-item">
+                <a class="nav-link text-body-tertiary" href="index.html"
+                  >HOME</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link active bg-success text-white px-3 rounded-4 fw-bolder"
+                  aria-current="page"
+                  style="cursor: default"
+                  >WEATHER REPORT</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-body-tertiary" href="contact.html"
+                  >CONTACT US</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main style="display: none" id="main">
+      <div
+        class="col-lg-3 col-12 overflow-hidden position-absolute top-0"
+        id="weatherStateImgContainer"
+      >
+        <div
+          class="d-flex flex-column justify-content-center align-items-center"
+          id="currentWeather"
+        >
+          <!-- TOGGLER UNIT CONVERSION -->
+          <div class="my-lg-5 my-2 m-0" id="temperatureUnitToggler">
+            <div class="me-4 h3 fw-bolder"
+              >&deg;C</div
+            >
+            <div class="form-check form-switch h2 pb-2">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onclick="tempToggled()">
+            </div>
+            <div class="ms-1 h3 fw-bolder"
+              >&deg;F</div
+            >
+          </div>
+
+          <div class="card mx-5 rounded-5 px-4 py-3" id="currentWeatherCard">
+            <div class="card-body p-0">
+              <div class="contentRows">
+                <div>
+                  <span class="display-4 fw-bolder" id="currentTemperatureValue"></span>
+                  <span class="h2 fw-bolder"><sup id="temperatureUnit"></sup></span>
+                </div>
+                <img class="ms-3" height="70px" alt="" id="currentWeatherImg"/>
+              </div>
+              <div class="contentRows m-0 mt-4 h5">
+                <strong id="country" style="text-align: center"></strong>
+              </div>
+              <div class="contentRows fw-bolder mb-2" id="locationName"></div>
+              <div class="contentRows" id="localTime"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-9 col-12" id="contentPane">
+        <div class="px-4 my-lg-5">
+          <div class="d-flex flex-wrap mb-5" id="searchContainer">
+            <input
+              class="form-control rounded-4 bg-body-tertiary"
+              list="datalistOptions"
+              id="input"
+              placeholder="Enter a city name"
+              style="width: 90%"
+            />
+            <datalist id="datalistOptions"> </datalist>
+            <button type="button" class="btn btn-dark rounded-pill" onclick="btnSearch()">
+              <i class="bi bi-search h3"></i>
+            </button>
+          </div>
+
+          <div class="content overflow-y-scroll overflow-x-hidden">
+            <div class="card-body rounded-4 mt-1 p-4" id="todaysCurrentStatus">
+              <div
+                class="mx-3 mb-3 fw-bolder"
+                id="titles"
+                style="font-size: large"
+              >
+                <strong>Todays Highlights : </strong><span class="text-danger" id="currentWeatherDescription"></span>
+              </div>
+
+              <div
+                class="d-flex flex-wrap justify-content-around"
+                id="currentWeatherDataRow1"
+              >
+                <!-- ==============================================================================
+                =================================AIR QUALITY==================================
+                ============================================================================== -->
+
+                <div
+                  class="card-body rounded-3 bg-white p-4"
+                  id="todaysCurrentAirQuality"
+                >
+                  Air Quality : <span id="airQualityIndicator"></span>
+                  <div
+                    class="d-flex flex-wrap mt-4 justify-content-evenly align-content-center"
+                  >
+                    <i class="bi bi-wind h1 me-2"></i>
+
+                    <div
+                      class="d-flex justify-content-evenly mx-2"
+                      style="
+                        text-align: center;
+                        flex: 1 1 auto;
+                        min-width: 255px;
+                        max-width: 70%;
+                      "
+                    >
+                      <div class="d-flex flex-column mx-1">
+                        <div class="text-muted">CO</div>
+                        <div class="h4 fw-bolder" id="carbonMonoxideIndex"></div>
+                      </div>
+                      <div class="d-flex flex-column mx-1">
+                        <div class="text-muted">NO<sub>2</sub></div>
+                        <div class="h4 fw-bolder" id="nitrogenDioxideIndex"></div>
+                      </div>
+                      <div class="d-flex flex-column mx-1">
+                        <div class="text-muted">O<sub>3</sub></div>
+                        <div class="h4 fw-bolder" id="ozoneIndex"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ==============================================================================
+                =================================SUNRISE & SUNSET=================================
+                ============================================================================== -->
+
+                <div
+                  class="card-body rounded-3 bg-white p-4"
+                  id="todaysSunriseSunset"
+                >
+                  Sunrise & Sunset :
+                  <div
+                    class="d-flex flex-wrap mt-4 justify-content-between align-content-center"
+                  >
+                    <div
+                      class="d-flex justify-content-around"
+                      style="
+                        width: 50%;
+                        flex: 1 1 auto;
+                        flex-basis: auto;
+                        width: 160px;
+                      "
+                    >
+                      <i class="bi bi-brightness-high-fill h1"></i>
+                      <div class="d-flex flex-column">
+                        <div class="text-muted">Sunrise</div>
+                        <div class="h4 fw-bolder" id="sunriseTime"></div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="d-flex justify-content-around"
+                      style="
+                        width: 50%;
+                        flex: 1 1 auto;
+                        flex-basis: auto;
+                        width: 160px;
+                      "
+                    >
+                      <i class="bi bi-moon-fill h1"></i>
+                      <div class="d-flex flex-column">
+                        <div class="text-muted">Sunset</div>
+                        <div class="h4 fw-bolder" id="sunsetTime"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="d-flex flex-wrap justify-content-around mb-3"
+                id="currentWeatherDataRow2"
+                style="text-align: center"
+              >
+                <!-- ==============================================================================
+                =====================================HUMIDITY=======================================
+                ============================================================================== -->
+
+                <div
+                  class="card-body rounded-3 bg-white py-4 px-3"
+                  id="todaysCurrentHumidity"
+                >
+                  Humidity :
+                  <div
+                    class="d-flex flex-wrap mt-3 justify-content-evenly align-items-center"
+                  >
+                    <i class="bi bi-droplet-fill h1 me-2"></i>
+
+                    <div class="h2 fw-bolder" id="currentHumidityValue"></div>
+                  </div>
+                </div>
+
+                <!-- ==============================================================================
+                ===================================AIR PRESSURE==================================
+                ============================================================================== -->
+
+                <div
+                  class="card-body rounded-3 bg-white py-4 px-3"
+                  id="todaysCurrentAirPressure"
+                >
+                  Air Pressure :
+                  <div
+                    class="d-flex flex-wrap mt-3 justify-content-evenly align-items-center"
+                  >
+                    <i class="bi bi-water h1 me-2"></i>
+                    <div class="h3 fw-bolder" id="currentPressureValue"></div>
+                  </div>
+                </div>
+
+                <!-- ==============================================================================
+                =====================================VISIBILITY=====================================
+                ============================================================================== -->
+
+                <div
+                  class="card-body rounded-3 bg-white py-4 px-3"
+                  id="todaysCurrentVisibility"
+                >
+                  Visibility :
+                  <div
+                    class="d-flex flex-wrap mt-3 justify-content-evenly align-items-center"
+                  >
+                    <i class="bi bi-eye-slash-fill h1 me-2"></i>
+
+                    <div class="h2 fw-bolder" id="currentVisibilityValue">10km</div>
+                  </div>
+                </div>
+
+                <!-- ==============================================================================
+                ===================================FEELS LIKE==================================
+                ============================================================================== -->
+
+                <div
+                  class="card-body rounded-3 bg-white py-4 px-3"
+                  id="todaysCurrentFeelsLike"
+                >
+                  Feels Like :
+                  <div
+                    class="d-flex flex-wrap mt-3 justify-content-evenly align-items-center"
+                  >
+                    <i class="bi bi-thermometer-half h1 me-2"></i>
+                    <div><span id="currentFeelsLikeValue" class="h1 fw-bolder"></span><sup id="currentFeelsLikeValueUnit" class="fw-bolder h5"></sup></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mx-3 mb-3 fw-semibold" id="titles">Today At</div>
+            <div
+              class="d-flex overflow-y-hidden overflow-x-scroll"
+              style="margin-bottom: 1.5rem; padding-bottom: 0.5rem"
+            >
+              <div class="d-flex flex-column" id="12am">
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>12 A.M</div>
+                    <div class="my-2">
+                      <img alt="" width="75%" id="todayAt12AMWeatherImg"/>
+                    </div>
+                    <div><span id="todayAt12AMTempValue"></span><span id="todayAt12AMTempUnit"></span></div>
+                  </div>
+                </div>
+
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 my-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>12 A.M</div>
+                    <div class="my-2">
+                      <i class="bi bi-tornado h1"></i>
+                    </div>
+                    <div id="todayAt12AMWindSpeed"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex flex-column" id="03am">
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>03 A.M</div>
+                    <div class="my-2">
+                      <img alt="" width="75%" id="todayAt03AMWeatherImg"/>
+                    </div>
+                    <div><span id="todayAt03AMTempValue"></span><span id="todayAt03AMTempUnit"></span></div>
+                  </div>
+                </div>
+
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 my-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>03 A.M</div>
+                    <div class="my-2">
+                      <i class="bi bi-tornado h1"></i>
+                    </div>
+                    <div id="todayAt03AMWindSpeed"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex flex-column" id="06am">
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>06 A.M</div>
+                    <div class="my-2">
+                      <img alt="" width="75%" id="todayAt06AMWeatherImg"/>
+                    </div>
+                    <div><span id="todayAt06AMTempValue"></span><span id="todayAt06AMTempUnit"></span></div>
+                  </div>
+                </div>
+
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 my-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>06 A.M</div>
+                    <div class="my-2">
+                      <i class="bi bi-tornado h1"></i>
+                    </div>
+                    <div id="todayAt06AMWindSpeed"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex flex-column" id="09am">
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>09 A.M</div>
+                    <div class="my-2">
+                      <img alt="" width="75%" id="todayAt09AMWeatherImg"/>
+                    </div>
+                    <div><span id="todayAt09AMTempValue"></span><span id="todayAt09AMTempUnit"></span></div>
+                  </div>
+                </div>
+
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 my-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>09 A.M</div>
+                    <div class="my-2">
+                      <i class="bi bi-tornado h1"></i>
+                    </div>
+                    <div id="todayAt09AMWindSpeed"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex flex-column" id="12pm">
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>12 P.M</div>
+                    <div class="my-2">
+                      <img alt="" width="75%" id="todayAt12PMWeatherImg"/>
+                    </div>
+                    <div><span id="todayAt12PMTempValue"></span><span id="todayAt12PMTempUnit"></span></div>
+                  </div>
+                </div>
+
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 my-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>12 P.M</div>
+                    <div class="my-2">
+                      <i class="bi bi-tornado h1"></i>
+                    </div>
+                    <div id="todayAt12PMWindSpeed"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex flex-column" id="03pm">
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>03 P.M</div>
+                    <div class="my-2">
+                      <img alt="" width="75%" id="todayAt03PMWeatherImg"/>
+                    </div>
+                    <div><span id="todayAt03PMTempValue"></span><span id="todayAt03PMTempUnit"></span></div>
+                  </div>
+                </div>
+
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 my-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>03 P.M</div>
+                    <div class="my-2">
+                      <i class="bi bi-tornado h1"></i>
+                    </div>
+                    <div id="todayAt03PMWindSpeed"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex flex-column" id="06pm">
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>06 P.M</div>
+                    <div class="my-2">
+                      <img alt="" width="75%" id="todayAt06PMWeatherImg"/>
+                    </div>
+                    <div><span id="todayAt06PMTempValue"></span><span id="todayAt06PMTempUnit"></span></div>
+                  </div>
+                </div>
+
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 my-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>06 P.M</div>
+                    <div class="my-2">
+                      <i class="bi bi-tornado h1"></i>
+                    </div>
+                    <div id="todayAt06PMWindSpeed"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex flex-column" id="09pm">
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>09 P.M</div>
+                    <div class="my-2">
+                      <img alt="" width="75%" id="todayAt09PMWeatherImg"/>
+                    </div>
+                    <div><span id="todayAt09PMTempValue"></span><span id="todayAt09PMTempUnit"></span></div>
+                  </div>
+                </div>
+
+                <div
+                  class="card-body rounded-4 me-4 py-3 px-3 my-3 border border-white"
+                  id="todaysAtStatus"
+                >
+                  <div
+                    class="d-flex flex-column justify-content-evenly align-content-center"
+                  >
+                    <div>09 P.M</div>
+                    <div class="my-2">
+                      <i class="bi bi-tornado h1"></i>
+                    </div>
+                    <div id="todayAt09PMWindSpeed"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="forecastHistory">
+              <div class="d-flex flex-column" id="forecastColumn">
+                <div class="mx-3 my-3 fw-bolder" id="titles">
+                  <strong>Weather Forecast</strong>
+                </div>
+
+                <div class="card-body rounded-4 p-4" id="weatherForecastCard">
+                  <div class="d-flex justify-content-around">
+                    <div class="d-flex flex-column" style="width: 40%" id="forecastWeather">
+                    </div>
+
+                    <div
+                      class="d-flex flex-column bg-white rounded-4 text-muted pb-2"
+                      id="forecastDates"
+                    >
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex flex-column" id="historyColumn">
+                <div class="mx-3 my-3 fw-bolder" id="titles">
+                  <strong>Weather History</strong>
+                </div>
+                <div class="card-body rounded-4 p-4" id="weatherHistoryCard">
+                  <div class="d-flex justify-content-around">
+                    <div class="d-flex flex-column" style="width: 40%" id="historyWeather">
+                    </div>
+
+                    <div
+                      class="d-flex flex-column bg-white rounded-4 text-muted pb-2"
+                      id="historyDates"
+                    >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="weatherAlertHolder"></div>
+
+            <!-- WEATHER API SITE -->
+            <div
+              class="d-flex flex-wrap justify-content-center align-items-center mt-5 p-3 rounded-2"
+              id="site"
+            >
+              <div class="mx-3">
+                <a href="https://www.weatherapi.com/" title="Free Weather API"
+                  ><img
+                    src="//cdn.weatherapi.com/v4/images/weatherapi_logo.png"
+                    alt="Weather data by WeatherAPI.com"
+                /></a>
+              </div>
+              <div class="mx-3">
+                Powered by
+                <a href="https://www.weatherapi.com/" title="Free Weather API"
+                  >WeatherAPI.com</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="loading" style="visibility: visible">
+      <div class="d-flex flex-column">
+        <div class="spinner-grow my-5" id="loadingSpinner" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="h2 mt-lg-3"><strong>LOADING...</strong></div>
+      </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" data-bs-delay="7500">
+      <div id="liveToast" class="toast bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-danger-subtle">
+          <strong class="me-auto text-body-emphasis">ERROR</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body text-white" id="toastError">
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded",()=>{
+        callWeatherApiReport();
+      })
+
+      document.getElementById("input").addEventListener('input', async (event) => {
+        loadLocations();
+      })
+    </script>
+  </body>
+</html>
