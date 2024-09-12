@@ -83,7 +83,7 @@ function btnSearch() {
                     handleAPIErrors(res);
                     resetForm();
                     return;
-                }else{
+                } else {
                     window.location.href = 'report.html';
                 }
             })
@@ -136,10 +136,12 @@ async function callRealTimeWeatherAPI(currentLocation) {
             .then(data => {
                 currentWeatherData = data;
 
-                weatherStateImgContainer.style.background = `url(${getWeatherImgHero(currentWeatherData.current.condition.code)})`;
-                weatherStateImgContainer.style.backgroundSize = `cover`;
-                weatherStateImgContainer.style.backgroundRepeat = `no-repeat`;
-                weatherStateImgContainer.style.backgroundPosition = `bottom`;
+                weatherStateImgContainer.addEventListener('load', () => {
+                    weatherStateImgContainer.style.background = `url(${getWeatherImgHero(currentWeatherData.current.condition.code)})`;
+                    weatherStateImgContainer.style.backgroundSize = `cover`;
+                    weatherStateImgContainer.style.backgroundRepeat = `no-repeat`;
+                    weatherStateImgContainer.style.backgroundPosition = `bottom`;
+                });
 
                 document.getElementById("currentWeatherImg").src = `${getWeatherImgIcon(currentWeatherData.current.condition.code, currentWeatherData.current.is_day)}`
                 document.getElementById("country").innerText = currentWeatherData.location.country;
@@ -296,9 +298,9 @@ function goToErrorPage(errorDescription) {
     window.location.href = 'error.html';
 }
 
-function errorMessage(){
+function errorMessage() {
     if (sessionStorage.getItem('errorMessage')) {
-        document.getElementById("errorMessage").innerText=sessionStorage.getItem('errorMessage');   
+        document.getElementById("errorMessage").innerText = sessionStorage.getItem('errorMessage');
     }
 }
 
