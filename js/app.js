@@ -133,15 +133,20 @@ async function callRealTimeWeatherAPI(currentLocation) {
                 }
                 return res.json();
             })
-            .then(data => {
+            .then(async data => {
                 currentWeatherData = data;
 
-                weatherStateImgContainer.addEventListener('load', () => {
+                // weatherStateImgContainer.style.background = `url(${getWeatherImgHero(currentWeatherData.current.condition.code)})`;
+                // weatherStateImgContainer.style.backgroundSize = `cover`;
+                // weatherStateImgContainer.style.backgroundRepeat = `no-repeat`;
+                // weatherStateImgContainer.style.backgroundPosition = `bottom`;
+
+                await weatherStateImgContainer.addEventListener('load', async () => {
                     weatherStateImgContainer.style.background = `url(${getWeatherImgHero(currentWeatherData.current.condition.code)})`;
                     weatherStateImgContainer.style.backgroundSize = `cover`;
                     weatherStateImgContainer.style.backgroundRepeat = `no-repeat`;
                     weatherStateImgContainer.style.backgroundPosition = `bottom`;
-                });
+                })
 
                 document.getElementById("currentWeatherImg").src = `${getWeatherImgIcon(currentWeatherData.current.condition.code, currentWeatherData.current.is_day)}`
                 document.getElementById("country").innerText = currentWeatherData.location.country;
