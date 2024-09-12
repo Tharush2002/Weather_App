@@ -124,61 +124,87 @@ async function callWeatherApiReport() {
 }
 
 async function callRealTimeWeatherAPI(currentLocation) {
-    try {
-        await fetch(realTimeWeatherAPIBaseURL + apiKey + `&q=${currentLocation}&aqi=yes`)
-            .then(res => {
-                if (!res.ok) {
-                    handleAPIErrors(res);
-                    throw new Error('API request failed');
-                }
-                return res.json();
-            })
-            .then(async data => {
-                currentWeatherData = data;
+    return new Promise(async (resolve, reject) => {
+        let imageUrl="";
+        async function APICall() {
+            try {
+                await fetch(realTimeWeatherAPIBaseURL + apiKey + `&q=${currentLocation}&aqi=yes`)
+                    .then(res => {
+                        if (!res.ok) {
+                            handleAPIErrors(res);
+                            throw new Error('API request failed');
+                        }
+                        return res.json();
+                    })
+                    .then(data => {
+                        currentWeatherData = data;
 
-                // weatherStateImgContainer.style.background = `url(${getWeatherImgHero(currentWeatherData.current.condition.code)})`;
-                // weatherStateImgContainer.style.backgroundSize = `cover`;
-                // weatherStateImgContainer.style.backgroundRepeat = `no-repeat`;
-                // weatherStateImgContainer.style.backgroundPosition = `bottom`;
+                        // weatherStateImgContainer.style.background = `url(${getWeatherImgHero(currentWeatherData.current.condition.code)})`;
+                        // weatherStateImgContainer.style.backgroundSize = `cover`;
+                        // weatherStateImgContainer.style.backgroundRepeat = `no-repeat`;
+                        // weatherStateImgContainer.style.backgroundPosition = `bottom`;
 
-                await weatherStateImgContainer.addEventListener('load', async () => {
-                    weatherStateImgContainer.style.background = `url(${getWeatherImgHero(currentWeatherData.current.condition.code)})`;
-                    weatherStateImgContainer.style.backgroundSize = `cover`;
-                    weatherStateImgContainer.style.backgroundRepeat = `no-repeat`;
-                    weatherStateImgContainer.style.backgroundPosition = `bottom`;
-                })
-
-                document.getElementById("currentWeatherImg").src = `${getWeatherImgIcon(currentWeatherData.current.condition.code, currentWeatherData.current.is_day)}`
-                document.getElementById("country").innerText = currentWeatherData.location.country;
-                document.getElementById("locationName").innerText = currentWeatherData.location.name;
-                document.getElementById("localTime").innerText = currentWeatherData.location.localtime.slice(-5);
+                        document.getElementById("currentWeatherImg").src = `${getWeatherImgIcon(currentWeatherData.current.condition.code, currentWeatherData.current.is_day)}`
+                        document.getElementById("country").innerText = currentWeatherData.location.country;
+                        document.getElementById("locationName").innerText = currentWeatherData.location.name;
+                        document.getElementById("localTime").innerText = currentWeatherData.location.localtime.slice(-5);
 
 
-                document.getElementById("currentTemperatureValue").innerText = Math.round(currentWeatherData.current.temp_c) + `\u00B0`
-                document.getElementById("temperatureUnit").innerText = "C";
+                        document.getElementById("currentTemperatureValue").innerText = Math.round(currentWeatherData.current.temp_c) + `\u00B0`
+                        document.getElementById("temperatureUnit").innerText = "C";
 
-                document.getElementById("currentFeelsLikeValue").innerText = Math.round(currentWeatherData.current.feelslike_c) + `\u00B0`
-                document.getElementById("currentFeelsLikeValueUnit").innerText = "C";
+                        document.getElementById("currentFeelsLikeValue").innerText = Math.round(currentWeatherData.current.feelslike_c) + `\u00B0`
+                        document.getElementById("currentFeelsLikeValueUnit").innerText = "C";
 
-                document.getElementById("currentWeatherDescription").innerText = currentWeatherData.current.condition.text;
+                        document.getElementById("currentWeatherDescription").innerText = currentWeatherData.current.condition.text;
 
-                measureAirQuality(currentWeatherData.current.air_quality[`us-epa-index`]);
+                        measureAirQuality(currentWeatherData.current.air_quality[`us-epa-index`]);
 
-                document.getElementById("carbonMonoxideIndex").innerText = Math.round(currentWeatherData.current.air_quality.co);
-                document.getElementById("nitrogenDioxideIndex").innerText = Math.round(currentWeatherData.current.air_quality.no2);
-                document.getElementById("ozoneIndex").innerText = Math.round(currentWeatherData.current.air_quality.o3);
+                        document.getElementById("carbonMonoxideIndex").innerText = Math.round(currentWeatherData.current.air_quality.co);
+                        document.getElementById("nitrogenDioxideIndex").innerText = Math.round(currentWeatherData.current.air_quality.no2);
+                        document.getElementById("ozoneIndex").innerText = Math.round(currentWeatherData.current.air_quality.o3);
 
-                document.getElementById("currentHumidityValue").innerText = Math.round(currentWeatherData.current.humidity) + `%`
+                        document.getElementById("currentHumidityValue").innerText = Math.round(currentWeatherData.current.humidity) + `%`
 
-                document.getElementById("currentPressureValue").innerText = Math.round(currentWeatherData.current.pressure_mb) + ` hPa`
+                        document.getElementById("currentPressureValue").innerText = Math.round(currentWeatherData.current.pressure_mb) + ` hPa`
 
-                document.getElementById("currentVisibilityValue").innerText = Math.round(currentWeatherData.current.vis_km) + ` Km`
+                        document.getElementById("currentVisibilityValue").innerText = Math.round(currentWeatherData.current.vis_km) + ` Km`
 
-                document.getElementById("currentVisibilityValue").innerText = Math.round(currentWeatherData.current.vis_km) + ` Km`
-            })
-    } catch (error) {
-        console.error('Error in callRealTimeWeatherAPI:', error);
-    }
+                        document.getElementById("currentVisibilityValue").innerText = Math.round(currentWeatherData.current.vis_km) + ` Km`
+                        
+                        imageUrl = `${getWeatherImgHero(currentWeatherData.current.condition.code)}`;
+                    })
+            } catch (error) {
+                // console.error('Error in callRealTimeWeatherAPI:', error);
+                throw(error);
+            }
+        }
+
+        function loadImage(url) {
+            return new Promise((imageResolve, imageReject) => {
+                const img = new Image();
+                img.src = url;
+                img.onload = () => imageResolve(img);
+                img.onerror = (error) => imageReject(error);
+            });
+        }
+
+        try {
+            await APICall();
+            await loadImage(imageUrl);
+
+            weatherStateImgContainer.style.backgroundImage = `url(${imageUrl})`;
+            // weatherStateImgContainer.style.background = `url(${getWeatherImgHero(currentWeatherData.current.condition.code)})`;
+            weatherStateImgContainer.style.backgroundSize = `cover`;
+            weatherStateImgContainer.style.backgroundRepeat = `no-repeat`;
+            weatherStateImgContainer.style.backgroundPosition = `bottom`;
+
+            resolve();
+        } catch (error) {
+            console.error('Error in callRealTimeWeatherAPI:', error);
+            reject(error);
+        }
+    })
 }
 
 async function callAstronomyAPI(currentLocation) {
@@ -253,7 +279,7 @@ async function callForecastAPI(currentLocation) {
                 }
                 generateForecast();
 
-                if (forecastWeatherData.alerts.alert.length > 0) {
+                if (forecastWeatherData.alerts.alert.length > 0) {                    
                     generateAlerts();
                 }
             })
@@ -454,18 +480,20 @@ function generateAlerts() {
               <ul class="list-unstyled text-danger fixed-indent" id="weatherAlertList">
               </ul>
             </div>`
-    weatherAlertHolder.innerHTML = weatherAlert;
+    weatherAlertHolder.innerHTML = weatherAlert;    
 
     let weatherAlertList = document.getElementById("weatherAlertList")
-    for (let index = 0; index < forecastWeatherData.alerts.alert.length; index++) {
-        let weatherAlertListItem = `<div class="d-flex align-items-start mb-3">
+    let weatherAlertListItem='';
+    for (let index = 0; index < forecastWeatherData.alerts.alert.length; index++) {        
+        temp = `<div class="d-flex align-items-start mb-3">
                   <i class="bi bi-exclamation-circle-fill h2 pe-2"></i>
                   <div>
                     <span class="fw-bolder">${forecastWeatherData.alerts.alert[index].headline} - </span>${forecastWeatherData.alerts.alert[index].desc}
                   </div>
                 </div>`
-        weatherAlertList.appendChild(weatherAlertListItem);
+        weatherAlertListItem+=temp;        
     }
+    weatherAlertList.innerHTML=weatherAlertListItem
 }
 
 // =================================================================
