@@ -139,11 +139,6 @@ async function callRealTimeWeatherAPI(currentLocation) {
                     .then(data => {
                         currentWeatherData = data;
 
-                        // weatherStateImgContainer.style.background = `url(${getWeatherImgHero(currentWeatherData.current.condition.code)})`;
-                        // weatherStateImgContainer.style.backgroundSize = `cover`;
-                        // weatherStateImgContainer.style.backgroundRepeat = `no-repeat`;
-                        // weatherStateImgContainer.style.backgroundPosition = `bottom`;
-
                         document.getElementById("currentWeatherImg").src = `${getWeatherImgIcon(currentWeatherData.current.condition.code, currentWeatherData.current.is_day)}`
                         document.getElementById("country").innerText = currentWeatherData.location.country;
                         document.getElementById("locationName").innerText = currentWeatherData.location.name;
@@ -175,7 +170,6 @@ async function callRealTimeWeatherAPI(currentLocation) {
                         imageUrl = `${getWeatherImgHero(currentWeatherData.current.condition.code)}`;
                     })
             } catch (error) {
-                // console.error('Error in callRealTimeWeatherAPI:', error);
                 throw(error);
             }
         }
@@ -194,7 +188,6 @@ async function callRealTimeWeatherAPI(currentLocation) {
             await loadImage(imageUrl);
 
             weatherStateImgContainer.style.backgroundImage = `url(${imageUrl})`;
-            // weatherStateImgContainer.style.background = `url(${getWeatherImgHero(currentWeatherData.current.condition.code)})`;
             weatherStateImgContainer.style.backgroundSize = `cover`;
             weatherStateImgContainer.style.backgroundRepeat = `no-repeat`;
             weatherStateImgContainer.style.backgroundPosition = `bottom`;
